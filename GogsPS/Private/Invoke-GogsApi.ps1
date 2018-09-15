@@ -34,6 +34,7 @@ function Invoke-GogsApi {
     
     process {
         $apiPrefixs = @{ '1' = 'api/v1' }
+        $headers = @{}
 
         if (-not $BaseUri.EndsWith('/')) {
             $BaseUri += '/'
@@ -49,11 +50,16 @@ function Invoke-GogsApi {
         }
         
         if ($Token -ne $null) {
-            $Parms['Token'] = $Token
-            $Parms['Authentication'] = 'OAuth'
+            if ($IsLinux) {
+                $plainToken = (New-Object -TypeName pscredential ("user", $Token)).GetNetworkCredential().Password
+            }
+            else {
+                $plainToken = ConvertFrom-SecureString -SecureString $Token
+            }
+            $headers.Add("Authorization", "Token $plainToken")
         }
 
-        $res = Invoke-RestMethod @Parms
+        $res = Invoke-RestMethod -Headers $headers @Parms
         return $res
     }
     
