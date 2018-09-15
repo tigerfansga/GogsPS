@@ -40,7 +40,7 @@ function Get-GogsUser {
             $Parms['Authentication'] = 'OAuth'
         }
         $user = Invoke-RestMethod @Parms
-        Write-Output $user
+        return $user[0]
     }
     
     end {
