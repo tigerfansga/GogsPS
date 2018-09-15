@@ -6,8 +6,8 @@ function Get-GogsUser {
         [string] $UserName,
 
         # Parameter help description
-        [Parameter(Mandatory = $true)]
-        [String] $Uri,
+        [Parameter(Mandatory = $true, HelpMessage = 'Base Uri of Gogs Server')]
+        [String] $BaseUri,
 
         [Parameter(ParameterSetName = 'Credential', Mandatory = $False)]
         [pscredential] $Credential,
@@ -26,21 +26,12 @@ function Get-GogsUser {
     }
     
     process {
-        $Parms = @{ Uri                    = $Uri + '/api/v1/users/' + $UserName; 
-            AllowUnencryptedAuthentication = $AllowUnencryptedAuthentication
-        }
-        if ($PSCmdlet.ParameterSetName -eq "Credential") {
-            if ($Credential -ne $null) {
-                $Parms['Credential'] = $Credential
-                $Parms['Authentication'] = 'Basic' 
-            }
-        }
-        else {
-            $Parms['Token'] = $Token
-            $Parms['Authentication'] = 'OAuth'
-        }
-        $user = Invoke-RestMethod @Parms
-        return $user[0]
+        $Parms = $PSBoundParameters
+        $Parms.Remove('UserName') | Out-Null
+        $Parms['ApiEndpoint'] = '/users/' + $UserName
+
+        $user = Invoke-GogsApi @Parms
+        return $user
     }
     
     end {
