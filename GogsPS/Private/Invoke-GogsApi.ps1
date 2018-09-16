@@ -25,7 +25,17 @@ function Invoke-GogsApi {
         
         # Parameter help description
         [Parameter()]
-        [switch] $AllowUnencryptedAuthentication = $false
+        [switch] $AllowUnencryptedAuthentication = $false,
+
+        # Parameter help description
+        [Parameter()]
+        [Microsoft.PowerShell.Commands.WebRequestMethod]
+        $Method = "Get",
+
+        # Parameter help description
+        [Parameter()]
+        [System.Collections.IDictionary]
+        $Data
         
     )
     
@@ -41,7 +51,8 @@ function Invoke-GogsApi {
         }
 
         $Parms = @{ Uri                    = $BaseUri + $apiPrefixs[$ApiVersion] + $ApiEndPoint; 
-            AllowUnencryptedAuthentication = $AllowUnencryptedAuthentication
+            AllowUnencryptedAuthentication = $AllowUnencryptedAuthentication;
+            Method                         = $Method
         }
 
         if ($Credential -ne $null) {
@@ -50,13 +61,14 @@ function Invoke-GogsApi {
         }
         
         if ($Token -ne $null) {
-            if ($IsLinux) {
-                $plainToken = (New-Object -TypeName pscredential ("user", $Token)).GetNetworkCredential().Password
-            }
-            else {
-                $plainToken = ConvertFrom-SecureString -SecureString $Token
-            }
-            $headers.Add("Authorization", "Token $plainToken")
+            $plainToken = ConvertFrom-GogsSecureString -SecureString $Token
+            $headers.Add("Authorization", "token $plainToken")
+        }
+
+        if ($Data -ne $null) {
+            $Body = ConvertTo-Json $Data
+            $headers.Add('Content-Type', 'application/json')
+            $Parms.Add('Body', $Body)
         }
 
         $res = Invoke-RestMethod -Headers $headers @Parms

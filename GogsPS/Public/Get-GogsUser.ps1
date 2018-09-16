@@ -29,6 +29,7 @@ function Get-GogsUser {
         $Parms = $PSBoundParameters
         $Parms.Remove('UserName') | Out-Null
         $Parms['ApiEndpoint'] = '/users/' + $UserName
+        $Parms['Method'] = 'Get'
 
         $user = Invoke-GogsApi @Parms
         return $user
