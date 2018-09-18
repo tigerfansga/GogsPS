@@ -61,7 +61,7 @@ function Invoke-GogsApi {
         }
         
         if ($Token -ne $null) {
-            $plainToken = ConvertFrom-GogsSecureString -SecureString $Token
+            $plainToken = ConvertFrom-SecureString -SecureString $Token
             $headers.Add("Authorization", "token $plainToken")
         }
 

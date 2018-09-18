@@ -64,7 +64,7 @@ function New-GogsUser {
             }
         }
         if ($Password) {
-            $Data["Password"] = ConvertFrom-GogsSecureString -SecureString $Password
+            $Data["Password"] = ConvertFrom-SecureString -SecureString $Password
         }
 
         $Parms["Data"] = $data
