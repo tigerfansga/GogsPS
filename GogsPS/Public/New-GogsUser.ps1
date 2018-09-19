@@ -68,7 +68,7 @@ function New-GogsUser {
         }
 
         $Parms["Data"] = $data
-        if ($PSCmdlet.ShouldProcess("Create user - $Username")) {
+        if ($PSCmdlet.ShouldProcess("$Username")) {
             $user = Invoke-GogsApi @Parms
         }
         return $user

@@ -33,7 +33,7 @@ function Remove-GogsUser {
                 $Parms[$var] = $val
             }
         }
-        if ($PSCmdlet.ShouldProcess("Remove user - $username")) {
+        if ($PSCmdlet.ShouldProcess("$username")) {
             $user = Invoke-GogsApi @Parms
         }
         return $user
