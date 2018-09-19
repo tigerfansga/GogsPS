@@ -1,3 +1,4 @@
 {
-    "files.defaultLanguage": "powershell"
+    "files.defaultLanguage": "powershell",
+    "files.trimTrailingWhitespace": true
 }

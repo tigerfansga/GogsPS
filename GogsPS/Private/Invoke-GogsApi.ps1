@@ -22,7 +22,7 @@ function Invoke-GogsApi {
         [ValidateSet('1')]
         [string]
         $ApiVersion = '1',
-        
+
         # Parameter help description
         [Parameter()]
         [switch] $AllowUnencryptedAuthentication = $false,
@@ -36,12 +36,12 @@ function Invoke-GogsApi {
         [Parameter()]
         [System.Collections.IDictionary]
         $Data
-        
+
     )
-    
+
     begin {
     }
-    
+
     process {
         $apiPrefixs = @{ '1' = 'api/v1' }
         $headers = @{}
@@ -50,16 +50,16 @@ function Invoke-GogsApi {
             $BaseUri += '/'
         }
 
-        $Parms = @{ Uri                    = $BaseUri + $apiPrefixs[$ApiVersion] + $ApiEndPoint; 
+        $Parms = @{ Uri                    = $BaseUri + $apiPrefixs[$ApiVersion] + $ApiEndPoint;
             AllowUnencryptedAuthentication = $AllowUnencryptedAuthentication;
             Method                         = $Method
         }
 
         if ($Credential -ne $null) {
             $Parms['Credential'] = $Credential
-            $Parms['Authentication'] = 'Basic' 
+            $Parms['Authentication'] = 'Basic'
         }
-        
+
         if ($Token -ne $null) {
             $plainToken = ConvertFrom-SecureString -SecureString $Token
             $headers.Add("Authorization", "token $plainToken")
@@ -74,7 +74,7 @@ function Invoke-GogsApi {
         $res = Invoke-RestMethod -Headers $headers @Parms
         return $res
     }
-    
+
     end {
     }
 }

@@ -15,16 +15,16 @@ function Get-GogsUser {
         # Parameter help description
         [Parameter(ParameterSetName = 'Token', Mandatory = $False)]
         [securestring] $Token,
-        
+
         # Parameter help description
         [Parameter()]
         [switch] $AllowUnencryptedAuthentication = $false
-        
+
     )
-    
+
     begin {
     }
-    
+
     process {
         $Parms = $PSBoundParameters
         $Parms.Remove('UserName') | Out-Null
@@ -34,7 +34,7 @@ function Get-GogsUser {
         $user = Invoke-GogsApi @Parms
         return $user
     }
-    
+
     end {
     }
 }

@@ -1,5 +1,6 @@
 function Remove-GogsUser {
-    [CmdletBinding(DefaultParameterSetName = 'Credential')]
+    [CmdletBinding(DefaultParameterSetName = 'Credential',
+        SupportsShouldProcess, ConfirmImpact = 'High')]
     param (
         # Parameter help description
         [Parameter(Mandatory = $true, HelpMessage = 'Base Uri of Gogs Server')]
@@ -11,7 +12,7 @@ function Remove-GogsUser {
         # Parameter help description
         [Parameter(ParameterSetName = 'Token', Mandatory = $False)]
         [securestring] $Token,
-        
+
         # Parameter help description
         [Parameter()]
         [switch] $AllowUnencryptedAuthentication = $false,
@@ -20,10 +21,10 @@ function Remove-GogsUser {
             HelpMessage = 'Username to delete')]
         [string] $UserName
     )
-    
+
     begin {
     }
-    
+
     process {
         $Parms = @{ BaseUri = $BaseUri; ApiEndpoint = "/admin/users/$UserName"; Method = 'Delete'; ApiVersion = '1' }
         Foreach ($var in "Credential", "Token", "AllowUnencryptedAuthentication") {
@@ -32,11 +33,12 @@ function Remove-GogsUser {
                 $Parms[$var] = $val
             }
         }
-
-        $user = Invoke-GogsApi @Parms
+        if ($PSCmdlet.ShouldProcess("Remove user - $username")) {
+            $user = Invoke-GogsApi @Parms
+        }
         return $user
     }
-    
+
     end {
     }
 }

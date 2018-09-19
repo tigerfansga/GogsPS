@@ -1,5 +1,6 @@
 function New-GogsUser {
-    [CmdletBinding(DefaultParameterSetName = 'Credential')]
+    [CmdletBinding(DefaultParameterSetName = 'Credential',
+        SupportsShouldProcess, ConfirmImpact = 'Medium')]
     param (
         # Parameter help description
         [Parameter(Mandatory = $true, HelpMessage = 'Base Uri of Gogs Server')]
@@ -11,13 +12,13 @@ function New-GogsUser {
         # Parameter help description
         [Parameter(ParameterSetName = 'Token', Mandatory = $False)]
         [securestring] $Token,
-        
+
         # Parameter help description
         [Parameter()]
         [switch] $AllowUnencryptedAuthentication = $false,
 
         [Parameter(Mandatory = $true,
-            HelpMessage = 'Username to retrieve')]
+            HelpMessage = 'User to create')]
         [string] $UserName,
 
         # Parameter help description
@@ -40,12 +41,11 @@ function New-GogsUser {
         [Parameter()]
         [System.Boolean] $send_notify
 
-        
     )
-    
+
     begin {
     }
-    
+
     process {
         $Parms = @{ BaseUri = $BaseUri; ApiEndpoint = '/admin/users'; Method = 'post'; ApiVersion = '1' }
         Foreach ($var in "Credential", "Token", "AllowUnencryptedAuthentication") {
@@ -68,10 +68,12 @@ function New-GogsUser {
         }
 
         $Parms["Data"] = $data
-        $user = Invoke-GogsApi @Parms
+        if ($PSCmdlet.ShouldProcess("Create user - $Username")) {
+            $user = Invoke-GogsApi @Parms
+        }
         return $user
     }
-    
+
     end {
     }
 }

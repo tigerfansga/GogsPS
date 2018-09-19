@@ -1,4 +1,4 @@
-<# 
+<#
 Secure Strings not fully supported in Linux and Mac. This will override
 ConvertFrom-SecureSting. When full support is added this can be removed.
 
