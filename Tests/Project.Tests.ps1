@@ -4,7 +4,7 @@ $moduleRoot = "$projectRoot\$ModuleName"
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
 
-    $Rules = Get-ScriptAnalyzerRule
+    $Rules = Get-ScriptAnalyzerRule | Where-Object RuleName -ne "PSUseToExportFieldsInManifest"
     $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | Where-Object fullname -notmatch 'classes'
 
     foreach ( $Script in $scripts )
