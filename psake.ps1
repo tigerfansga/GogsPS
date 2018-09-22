@@ -29,19 +29,19 @@ Task Init {
     "`n"
 }
 
-Task UnitTests -Depends Init {
-    $lines
-    'Running quick unit tests to fail early if there is an error'
-    $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build
+# Task UnitTests -Depends Init {
+#     $lines
+#     'Running quick unit tests to fail early if there is an error'
+#     $TestResults = Invoke-Pester -Path $ProjectRoot\Tests\*unit* -PassThru -Tag Build
 
-    if ($TestResults.FailedCount -gt 0)
-    {
-        Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
-    }
-    "`n"
-}
+#     if ($TestResults.FailedCount -gt 0)
+#     {
+#         Write-Error "Failed '$($TestResults.FailedCount)' tests, build failed"
+#     }
+#     "`n"
+# }
 
-Task Test -Depends UnitTests {
+Task Test -Depends Init {
     $lines
     "`n`tSTATUS: Testing with PowerShell $PSVersion"
 
