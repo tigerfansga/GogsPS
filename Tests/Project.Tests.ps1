@@ -1,31 +1,33 @@
 $projectRoot = Resolve-Path "$PSScriptRoot\.."
-$script:ModuleName = 'GogsPS'
-$moduleRoot = "$projectRoot\$ModuleName"
+$moduleRoot = Split-Path (Resolve-Path "$projectRoot\*\*.psd1")
+$moduleName = Split-Path $moduleRoot -Leaf
 
 Describe "PSScriptAnalyzer rule-sets" -Tag Build {
 
-    $Rules = Get-ScriptAnalyzerRule | Where-Object RuleName -ne "PSUseToExportFieldsInManifest"
-    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | Where-Object fullname -notmatch 'classes'
+    $Rules = Get-ScriptAnalyzerRule
+    $scripts = Get-ChildItem $moduleRoot -Include *.ps1, *.psm1, *.psd1 -Recurse | where fullname -notmatch 'classes'
 
     foreach ( $Script in $scripts )
     {
         Context "Script '$($script.FullName)'" {
-
-            foreach ( $rule in $rules )
+            $results = Invoke-ScriptAnalyzer -Path $script.FullName -includeRule $Rules
+            if ($results)
             {
-                It "Rule [$rule]" {
+                foreach ($rule in $results)
+                {
+                    It $rule.RuleName {
+                        $message = "{0} Line {1}: {2}" -f $rule.Severity, $rule.Line, $rule.message
+                        $message | Should Be ""
+                    }
 
-                    (Invoke-ScriptAnalyzer -Path $script.FullName -IncludeRule $rule.RuleName ).Count | Should Be 0
+                }
+            }
+            else
+            {
+                It "Should not fail any rules" {
+                    $results | Should BeNullOrEmpty
                 }
             }
         }
-    }
-}
-
-
-Describe "General project validation: $moduleName" -Tags Build {
-
-    It "Module '$moduleName' can import cleanly" {
-        {Import-Module (Join-Path $moduleRoot "$moduleName.psm1") -force } | Should Not Throw
     }
 }
