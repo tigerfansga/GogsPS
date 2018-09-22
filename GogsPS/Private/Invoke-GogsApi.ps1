@@ -40,7 +40,6 @@ function Invoke-GogsApi {
     )
 
     begin {
-        gci .
     }
 
     process {
