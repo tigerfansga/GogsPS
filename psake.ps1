@@ -13,10 +13,9 @@ Properties {
     $TestFile = "TestResults_PS$PSVersion`_$TimeStamp.xml"
     $lines = '----------------------------------------------------------------------'
 
-    $Verbose = @{}
     if ($ENV:BHCommitMessage -match "!verbose")
     {
-        $Verbose = @{Verbose = $True}
+        $VerbosePreference = "Continue"
     }
 }
 
