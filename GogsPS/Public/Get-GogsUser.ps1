@@ -23,7 +23,6 @@ function Get-GogsUser {
     )
 
     begin {
-        gci
     }
 
     process {
