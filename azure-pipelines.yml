@@ -10,7 +10,6 @@ phases:
   steps:
   - powershell: ./build.ps1
     displayName: Windows Script Build
-    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish Window Test Results **/TestResults*.xml'
@@ -18,7 +17,7 @@ phases:
       testRunner: NUnit
 
       testResultsFiles: '**/TestResults*.xml'
-
+    condition: succeededOrFailed()
 
 
 - phase: Phase_2
@@ -30,7 +29,6 @@ phases:
   steps:
   - powershell: ./build.ps1
     displayName: Linux Script Build
-    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish Linux Test Results **/TestResults*.xml'
@@ -38,7 +36,7 @@ phases:
       testRunner: NUnit
 
       testResultsFiles: '**/TestResults*.xml'
-
+    condition: succeededOrFailed()
 
 
 - phase: Phase_3
@@ -50,7 +48,6 @@ phases:
   steps:
   - powershell: ./build.ps1
     displayName: MacOS Script Build
-    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish macOS Test Results **/TestResults*.xml'
@@ -58,5 +55,6 @@ phases:
       testRunner: NUnit
 
       testResultsFiles: '**/TestResults*.xml'
+    condition: succeededOrFailed()
 
 
