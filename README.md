@@ -1,6 +1,6 @@
 # Gogs API Client in PowerShell
 
-[![Build Status](https://dev.azure.com/mark0746/GogsPS/_apis/build/status/GogsPS-Build)](https://dev.azure.com/mark0746/GogsPS/_build/latest?definitionId=2)
+[![Build Status](https://dev.azure.com/mark0746/GogsPS/_apis/build/status/tigerfansga.GogsPS)](https://dev.azure.com/mark0746/GogsPS/_build/latest?definitionId=3)
 
 A PowerShell module to access a Gogs Server
 
