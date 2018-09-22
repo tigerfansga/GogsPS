@@ -12,7 +12,7 @@ phases:
     displayName: Build Windows
 
   - task: PublishTestResults@2
-    displayName: 'Publish Windows Test Results **/TestResults*.xml'
+    displayName: 'Publish Window Test Results **/TestResults*.xml'
     inputs:
       testRunner: NUnit
 
