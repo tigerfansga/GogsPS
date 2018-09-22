@@ -9,7 +9,8 @@ phases:
     name: Hosted VS2017
   steps:
   - powershell: ./build.ps1
-    displayName: Build Windows
+    displayName: Windows Script Build
+    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish Window Test Results **/TestResults*.xml'
@@ -28,7 +29,8 @@ phases:
     name: Hosted Ubuntu 1604
   steps:
   - powershell: ./build.ps1
-    displayName: ScriptBuild
+    displayName: Linux Script Build
+    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish Linux Test Results **/TestResults*.xml'
@@ -47,7 +49,8 @@ phases:
     name: Hosted macOS
   steps:
   - powershell: ./build.ps1
-    displayName: ScriptBuild
+    displayName: MacOS Script Build
+    continueOnError: true
 
   - task: PublishTestResults@2
     displayName: 'Publish macOS Test Results **/TestResults*.xml'
